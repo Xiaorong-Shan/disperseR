@@ -176,7 +176,7 @@ plot_impact_single  <- function(data.linked,
     ) +
     scale_shape_discrete(solid = T) +
     ggplot2::coord_sf(xlim = c(minlong, maxlong),
-                      ylim = c(minlat, maxlat)) +
+                      ylim = c(minlat, maxlat), lims_method = "geometry_bbox") +
     colorscale +
     fillscale +
     theme.default +
