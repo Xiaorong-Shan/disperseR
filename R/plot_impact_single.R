@@ -64,7 +64,7 @@ plot_impact_single  <- function(data.linked,
 
   ## coordinates
   coord <- data.table( st_coordinates( na.omit( dataset_sf)$geometry))
-  setnames( coord, c( 'x', 'y'), c( 'Longitude', 'Latitude'))
+  setnames( coord, c( 'x', 'y'), c( 'Longitude', 'Latitude'),skip_absent = TRUE)
   if (zoom == T){
     long <- coord$Longitude
     minlong <-min(long) - 8
