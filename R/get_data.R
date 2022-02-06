@@ -98,7 +98,7 @@ get_data <-
       directory <- zcta_dir
       file <- file.path(directory, 'cb_2017_us_zcta510_500k.zip')
       url <-
-        'https://www2.census.gov/geo/tiger/GENZ2017/shp/cb_2017_us_zcta510_500k.zip'
+        'ftp://ftp2.census.gov/geo/tiger/GENZ2017/shp/cb_2017_us_zcta510_500k.zip'
 
       if (!file.exists(file)) {
         message(
@@ -227,7 +227,7 @@ get_data <-
       directory <- zcta_dir
       file <- file.path(directory, 'cb_2017_us_zcta510_500k.zip')
       url <-
-        'https://www2.census.gov/geo/tiger/GENZ2017/shp/cb_2017_us_zcta510_500k.zip'
+        'ftp://ftp2.census.gov/geo/tiger/GENZ2017/shp/cb_2017_us_zcta510_500k.zip'
     }
 
     if (data == "pblheight") {
