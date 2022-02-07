@@ -425,7 +425,7 @@ disperser_link_counties <- function(  link_dates = NULL,
         'character')
     vec_filedates <-
       seq.Date(
-        from = as.Date( start.date) - ceiling( duration.run.hours / 24),
+        from = as.Date( start.date), #previously defines as: as.Date( start.date) - ceiling( duration.run.hours / 24),
         to = as.Date( end.date),
         by = '1 day'
       )
