@@ -234,9 +234,11 @@ get_data <-
       ## planetary layers data
       directory <- hpbl_dir
       file <- file.path(directory, 'hpbl.mon.mean.nc')
-      url <-
-        'https://www.esrl.noaa.gov/psd/repository/entry/get/hpbl.mon.mean.nc?entryid=synth%3Ae570c8f9-ec09-4e89-93b4-babd5651e7a9%3AL05BUlIvTW9udGhsaWVzL21vbm9sZXZlbC9ocGJsLm1vbi5tZWFuLm5j'
-    }
+      # url <-
+      #   'https://www.esrl.noaa.gov/psd/repository/entry/get/hpbl.mon.mean.nc?entryid=synth%3Ae570c8f9-ec09-4e89-93b4-babd5651e7a9%3AL05BUlIvTW9udGhsaWVzL21vbm9sZXZlbC9ocGJsLm1vbi5tZWFuLm5j'
+      url<-
+        'https://www.dropbox.com/s/gwjzgayufvch1e9/hpbl.mon.mean.nc?dl=0'
+      }
 
     # download meteo files
     if (data == "metfiles") {
