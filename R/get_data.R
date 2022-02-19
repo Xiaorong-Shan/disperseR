@@ -237,7 +237,7 @@ get_data <-
       # url <-
       #   'https://www.esrl.noaa.gov/psd/repository/entry/get/hpbl.mon.mean.nc?entryid=synth%3Ae570c8f9-ec09-4e89-93b4-babd5651e7a9%3AL05BUlIvTW9udGhsaWVzL21vbm9sZXZlbC9ocGJsLm1vbi5tZWFuLm5j'
       url<-
-        'https://www.dropbox.com/s/gwjzgayufvch1e9/hpbl.mon.mean.nc?dl=0'
+        'link: https://downloads.psl.noaa.gov/Datasets/NARR/Monthlies/monolevel/hpbl.mon.mean.nc'
       }
 
     # download meteo files
