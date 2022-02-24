@@ -181,7 +181,7 @@ link_all_units<- function(units.run,
       cur_startdate = link_dates$start.date
       cur_linkdates <- list(cur_startdate,cur_startdate+1)
       names(cur_linkdates) <- c("start.date","end.date")
-      linked_grids <- parallel::mclapply(
+      linked_grids <- lapply(
         cur_linkdates,
         disperseR::disperser_link_grids,
         unit = u,
