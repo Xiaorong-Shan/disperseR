@@ -195,7 +195,7 @@ link_all_units<- function(units.run,
         return.linked.data. = return.linked.data
       )
       cur_startdate = cur_startdate+1
-      while(cur_startdate<link_dates$end.date){
+      for(counter in c(1:29)){
         tmp_linked_grids <- parallel::mclapply(
           cur_linkdates,
           disperseR::disperser_link_grids,
