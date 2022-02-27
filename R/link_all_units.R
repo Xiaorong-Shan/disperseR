@@ -179,8 +179,8 @@ link_all_units<- function(units.run,
 
   grids_link_parallel <- function(u) {
     if(by.time == 'day'){
-      cur_startdate = link_dates$start.date
-      link_dates$end.date = cur_startdate+2
+      # cur_startdate = link_dates$start.date
+      # link_dates$end.date = cur_startdate+2
       # cur_linkdates <- list(cur_startdate,cur_startdate+1)
       # names(cur_linkdates) <- c("start.date","end.date")
       linked_grids <- parallel::mclapply(
