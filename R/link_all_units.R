@@ -129,7 +129,7 @@ link_all_units<- function(units.run,
                         function (n)
                           list( start.date = start.date[n],
                                 end.date = end.date[n]))
-  #[start.date='2007-01-01',end.date='2007-01-31']
+  #link_dates[[1]]==[start.date='2007-01-01',end.date='2007-01-31']
 
   # run the link functions
   zips_link_parallel <- function(u) {
@@ -179,8 +179,8 @@ link_all_units<- function(units.run,
 
   grids_link_parallel <- function(u) {
     if(by.time == 'day'){
-      cur_startdate = link_dates$start.date
-      link_dates$end.date = cur_startdate+2
+      cur_startdate = link_dates[[1]]$start.date
+      link_dates[[1]]$end.date = cur_startdate+1
       # cur_linkdates <- list(cur_startdate,cur_startdate+1)
       # names(cur_linkdates) <- c("start.date","end.date")
       linked_grids <- parallel::mclapply(
