@@ -259,7 +259,8 @@ disperser_link_grids <- function(   link_dates = NULL,
     month_YYYYMM <- paste( start.date, end.date, sep = '_')
 
   month_YYYYMM <- as( month_YYYYMM, 'character')
-
+  print(end.date)
+  print(month_YYYYMM)
   ## name the eventual output file
   output_file <- file.path( ziplink_dir,
                             paste0("gridlinks_",
