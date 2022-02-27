@@ -179,15 +179,11 @@ link_all_units<- function(units.run,
   grids_link_parallel <- function(u) {
     if(by.time == 'day'){
       cur_startdate = link_dates$start.date
-      cur_enddate = cur_startdate+1
-      cur_linkdates <- lapply(seq_along(cur_startdate), 
-                              function(n)
-                                list(start.data = cur_startdate[n],
-                                     end.date = cur_enddate[n]))
+      link_dates$end.date = cur_startdate+1
       # cur_linkdates <- list(cur_startdate,cur_startdate+1)
       # names(cur_linkdates) <- c("start.date","end.date")
       linked_grids <- parallel::mclapply(
-        cur_linkdates,
+        link_dates,
         disperseR::disperser_link_grids,
         unit = u,
         pbl.height = pbl.height,
