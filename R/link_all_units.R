@@ -118,7 +118,7 @@ link_all_units<- function(units.run,
           start.date,
           function( d) seq( d,#create a sequence of variables
                             by = paste (1, 'month'),#by = '1 month'
-                            # by = paste (1, by.time),#by = '1 month'
+                            # by = paste (1, by.time),#by = '1 day'
                             length.out = 2)[2] - 1#['2007-01-01','2007-02-01']
         ),#e.g.,"2007-01-31"
         origin = '1970-01-01')
@@ -180,11 +180,25 @@ link_all_units<- function(units.run,
   grids_link_parallel <- function(u) {
     if(by.time == 'day'){
       cur_startdate = link_dates[[1]]$start.date
-      link_dates[[1]]$end.date = cur_startdate+1
+      cur_enddate <-
+        as.Date(
+          sapply(
+            cur_startdate,
+            function( d) seq( d,#create a sequence of variables
+                              by = paste (1, 'day'),#by = '1 day'
+                              length.out = 2)[2]#['2007-01-02']
+          ),#e.g.,"2007-01-31"
+          origin = '1970-01-01')
+      cur_linkdates <- lapply( seq_along( cur_startdate),#[1]
+                            function (n)
+                              list( start.date = cur_startdate[n],
+                                    end.date = cur_enddate[n]))
+      print(cur_linkdates[[1]]$end.date)
+      # link_dates[[1]]$end.date = cur_startdate+1
       # cur_linkdates <- list(cur_startdate,cur_startdate+1)
       # names(cur_linkdates) <- c("start.date","end.date")
       linked_grids <- parallel::mclapply(
-        link_dates,
+        cur_linkdates,
         disperseR::disperser_link_grids,
         unit = u,
         pbl.height = pbl.height,
