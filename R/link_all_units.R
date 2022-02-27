@@ -195,23 +195,23 @@ link_all_units<- function(units.run,
         return.linked.data. = return.linked.data
       )
       # test block below
-      cur_startdate = cur_startdate+1
-      cur_linkdates <- list(cur_startdate,cur_startdate+1)
-      names(cur_linkdates) <- c("start.date","end.date")
-      tmp_linked_grids <- parallel::mclapply(
-        cur_linkdates,
-        disperseR::disperser_link_grids,
-        unit = u,
-        pbl.height = pbl.height,
-        duration.run.hours = duration.run.hours,
-        overwrite = overwrite,
-        res.link. = res.link,
-        mc.cores = mc.cores,
-        pbl. = pbl.trim,
-        crop.usa = crop.usa,
-        return.linked.data. = return.linked.data
-      )
-      linked_grids <- rbind(linked_grids,tmp_linked_grids)
+      # cur_startdate = cur_startdate+1
+      # cur_linkdates <- list(cur_startdate,cur_startdate+1)
+      # names(cur_linkdates) <- c("start.date","end.date")
+      # tmp_linked_grids <- parallel::mclapply(
+      #   cur_linkdates,
+      #   disperseR::disperser_link_grids,
+      #   unit = u,
+      #   pbl.height = pbl.height,
+      #   duration.run.hours = duration.run.hours,
+      #   overwrite = overwrite,
+      #   res.link. = res.link,
+      #   mc.cores = mc.cores,
+      #   pbl. = pbl.trim,
+      #   crop.usa = crop.usa,
+      #   return.linked.data. = return.linked.data
+      # )
+      # linked_grids <- rbind(linked_grids,tmp_linked_grids)
       # for(counter in c(1:29)){
       #   cur_startdate = cur_startdate+1
       #   cur_linkdates <- list(cur_startdate,cur_startdate+1)
