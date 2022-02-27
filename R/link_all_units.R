@@ -200,11 +200,9 @@ link_all_units<- function(units.run,
       # cur_linkdates <- list(cur_startdate,cur_startdate+1)
       # names(cur_linkdates) <- c("start.date","end.date")
       linked_grids <- parallel::mclapply(
-        link_dates,
+        link_dates=link_dates,
         disperseR::disperser_link_grids,
         unit = u,
-        start.date = cur_startdate,
-        end.date = cur_enddate,
         pbl.height = pbl.height,
         duration.run.hours = duration.run.hours,
         overwrite = overwrite,

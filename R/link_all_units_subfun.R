@@ -235,8 +235,8 @@ disperser_link_grids <- function(   link_dates = NULL,
 
   # use dates in link_dates if available
   if( !is.null( link_dates)){
-    start.date <- link_dates$start.date
-    end.date <- link_dates$end.date
+    start.date <- link_dates[[1]]$start.date
+    end.date <- link_dates[[1]]$end.date
   }
 
   if( (is.null( start.date) | is.null( end.date)) & is.null( month_YYYYMM))
@@ -259,8 +259,7 @@ disperser_link_grids <- function(   link_dates = NULL,
     month_YYYYMM <- paste( start.date, end.date, sep = '_')
 
   month_YYYYMM <- as( month_YYYYMM, 'character')
-  print(end.date)
-  print(month_YYYYMM)
+
   ## name the eventual output file
   output_file <- file.path( ziplink_dir,
                             paste0("gridlinks_",
