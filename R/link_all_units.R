@@ -117,7 +117,8 @@ link_all_units<- function(units.run,
         sapply(
           start.date,
           function( d) seq( d,#create a sequence of variables
-                            by = paste (1, by.time),#by = '1 month'
+                            by = paste (1, 'month'),#by = '1 month'
+                            # by = paste (1, by.time),#by = '1 month'
                             length.out = 2)[2] - 1#['2007-01-01','2007-02-01']
         ),#e.g.,"2007-01-31"
         origin = '1970-01-01')
@@ -179,15 +180,7 @@ link_all_units<- function(units.run,
   grids_link_parallel <- function(u) {
     if(by.time == 'day'){
       cur_startdate = link_dates$start.date
-      link_dates$end.date <-
-        as.Date(
-          sapply(
-            cur_startdate,
-            function( d) seq( d,#create a sequence of variables
-                              by = '1 day',
-                              length.out = 2)[2] - 1#['2007-01-01','2007-02-01']
-          ),#e.g.,"2007-01-31"
-          origin = '1970-01-01')
+      link_dates$end.date = cur_startdate+2
       # cur_linkdates <- list(cur_startdate,cur_startdate+1)
       # names(cur_linkdates) <- c("start.date","end.date")
       linked_grids <- parallel::mclapply(
