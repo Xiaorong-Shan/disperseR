@@ -235,8 +235,8 @@ disperser_link_grids <- function(   link_dates = NULL,
 
   # use dates in link_dates if available
   if( !is.null( link_dates)){
-    start.date <- link_dates[[1]]$start.date
-    end.date <- link_dates[[1]]$end.date
+    start.date <- link_dates$start.date
+    end.date <- link_dates$end.date
   }
 
   if( (is.null( start.date) | is.null( end.date)) & is.null( month_YYYYMM))
