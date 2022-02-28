@@ -80,18 +80,33 @@ link_all_units<- function(units.run,
         substr(year.mons, 5, 6),
         '01',
         sep = '-'
-      ))
-    # if(by.time == 'day'){
-    #   end.date <-
-    #     as.Date(
-    #       sapply(
-    #         start.date,
-    #         function( d) seq( d,#create a sequence of variables
-    #                           by = paste (1, by.time),#by = '1 day'
-    #                           length.out = 2)[2]#['2007-01-01','2007-01-02']
-    #       ),#e.g.,"2007-01-02"
-    #       origin = '1970-01-01')
-    # }else if(by.time == 'week'){
+      ))#length=12
+    end.date <-
+      as.Date(
+        sapply(
+          start.date,
+          function( d) seq( d,#create a sequence of variables
+                            by = paste (1, 'month'),#by = '1 month'
+                            # by = paste (1, by.time),#by = '1 day'
+                            length.out = 2)[2] - 1#['2007-01-01','2007-02-01']
+        ),#e.g.,"2007-01-31"
+        origin = '1970-01-01')
+    if(by.time == 'day'){
+      headdate = start.date[1]
+      taildate = tail(end.date,n=1)
+      start.date = seq(from=headdate,to=taildate-1,by='day')
+      end.date = seq(from=headdate+1,to=taildate,by='day')
+      # end.date <-
+      #   as.Date(
+      #     sapply(
+      #       start.date,
+      #       function( d) seq( d,#create a sequence of variables
+      #                         by = paste (1, by.time),#by = '1 day'
+      #                         length.out = 2)[2]#['2007-01-01','2007-01-02']
+      #     ),#e.g.,"2007-01-02"
+      #     origin = '1970-01-01')
+    }
+    # else if(by.time == 'week'){
     #   end.date <-
     #     as.Date(
     #       sapply(
@@ -112,20 +127,11 @@ link_all_units<- function(units.run,
     #       ),#e.g.,"2007-01-31"
     #       origin = '1970-01-01')
     # }
-    end.date <-
-      as.Date(
-        sapply(
-          start.date,
-          function( d) seq( d,#create a sequence of variables
-                            by = paste (1, 'month'),#by = '1 month'
-                            # by = paste (1, by.time),#by = '1 day'
-                            length.out = 2)[2] - 1#['2007-01-01','2007-02-01']
-        ),#e.g.,"2007-01-31"
-        origin = '1970-01-01')
+    
   }
 
   # create list of dates to link
-  link_dates <- lapply( seq_along( start.date),#[1]
+  link_dates <- lapply( seq_along( start.date),#[12]
                         function (n)
                           list( start.date = start.date[n],
                                 end.date = end.date[n]))
