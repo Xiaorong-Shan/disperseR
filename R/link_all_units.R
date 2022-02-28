@@ -195,7 +195,7 @@ link_all_units<- function(units.run,
       #                               end.date = cur_enddate[n]))
       # print(cur_linkdates[[1]]$end.date)
       
-      link_dates[[1]]$end.date = cur_startdate+1
+      # link_dates[[1]]$end.date = cur_startdate+1
       print(link_dates[[1]]$end.date)
       # cur_linkdates <- list(cur_startdate,cur_startdate+1)
       # names(cur_linkdates) <- c("start.date","end.date")
