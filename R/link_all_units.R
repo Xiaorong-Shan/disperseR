@@ -101,7 +101,7 @@ link_all_units<- function(units.run,
       headdate = start.date[1]
       taildate = tail(end.date,n=1)
       start.date = seq(from=headdate,to=taildate-1,by='week')
-      end.date = seq(from=headdate+1,to=taildate,by='week')
+      end.date = seq(from=headdate+6,to=taildate,by='week')
     }
     
   }
