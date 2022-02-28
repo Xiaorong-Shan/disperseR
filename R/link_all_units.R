@@ -96,42 +96,18 @@ link_all_units<- function(units.run,
       taildate = tail(end.date,n=1)
       start.date = seq(from=headdate,to=taildate-1,by='day')
       end.date = seq(from=headdate+1,to=taildate,by='day')
-      # end.date <-
-      #   as.Date(
-      #     sapply(
-      #       start.date,
-      #       function( d) seq( d,#create a sequence of variables
-      #                         by = paste (1, by.time),#by = '1 day'
-      #                         length.out = 2)[2]#['2007-01-01','2007-01-02']
-      #     ),#e.g.,"2007-01-02"
-      #     origin = '1970-01-01')
     }
-    # else if(by.time == 'week'){
-    #   end.date <-
-    #     as.Date(
-    #       sapply(
-    #         start.date,
-    #         function( d) seq( d,#create a sequence of variables
-    #                           by = paste (1, by.time),#by = '1 week'
-    #                           length.out = 2)[2] - 1#['2007-01-01','2007-01-08']
-    #       ),#e.g.,"2007-01-07"
-    #       origin = '1970-01-01')
-    # }else{
-    #   end.date <-
-    #     as.Date(
-    #       sapply(
-    #         start.date,
-    #         function( d) seq( d,#create a sequence of variables
-    #                           by = paste (1, by.time),#by = '1 month'
-    #                           length.out = 2)[2] - 1#['2007-01-01','2007-02-01']
-    #       ),#e.g.,"2007-01-31"
-    #       origin = '1970-01-01')
-    # }
+    else if(by.time == 'week'){
+      headdate = start.date[1]
+      taildate = tail(end.date,n=1)
+      start.date = seq(from=headdate,to=taildate-1,by='week')
+      end.date = seq(from=headdate+1,to=taildate,by='week')
+    }
     
   }
 
   # create list of dates to link
-  link_dates <- lapply( seq_along( start.date),#[12]
+  link_dates <- lapply( seq_along( start.date),#[1,2,...,12]
                         function (n)
                           list( start.date = start.date[n],
                                 end.date = end.date[n]))
@@ -184,97 +160,19 @@ link_all_units<- function(units.run,
   }
 
   grids_link_parallel <- function(u) {
-    if(by.time == 'day'){
-      cur_startdate = link_dates[[1]]$start.date
-      # cur_enddate <-
-      #   as.Date(
-      #     sapply(
-      #       cur_startdate,
-      #       function( d) seq( d,#create a sequence of variables
-      #                         by = paste (1, 'day'),#by = '1 day'
-      #                         length.out = 2)[2]#['2007-01-02']
-      #     ),#e.g.,"2007-01-31"
-      #     origin = '1970-01-01')
-      # cur_linkdates <- lapply( seq_along( cur_startdate),#[1]
-      #                       function (n)
-      #                         list( start.date = cur_startdate[n],
-      #                               end.date = cur_enddate[n]))
-      # print(cur_linkdates[[1]]$end.date)
-      
-      # link_dates[[1]]$end.date = cur_startdate+1
-      print(link_dates)
-      print(link_dates[[1]]$end.date)
-      # cur_linkdates <- list(cur_startdate,cur_startdate+1)
-      # names(cur_linkdates) <- c("start.date","end.date")
-      linked_grids <- parallel::mclapply(
-        link_dates,
-        disperseR::disperser_link_grids,
-        unit = u,
-        pbl.height = pbl.height,
-        duration.run.hours = duration.run.hours,
-        overwrite = overwrite,
-        res.link. = res.link,
-        mc.cores = mc.cores,
-        pbl. = pbl.trim,
-        crop.usa = crop.usa,
-        return.linked.data. = return.linked.data
-      )
-      # test block below
-      # cur_startdate = cur_startdate+1
-      # cur_linkdates <- list(cur_startdate,cur_startdate+1)
-      # names(cur_linkdates) <- c("start.date","end.date")
-      # tmp_linked_grids <- parallel::mclapply(
-      #   cur_linkdates,
-      #   disperseR::disperser_link_grids,
-      #   unit = u,
-      #   pbl.height = pbl.height,
-      #   duration.run.hours = duration.run.hours,
-      #   overwrite = overwrite,
-      #   res.link. = res.link,
-      #   mc.cores = mc.cores,
-      #   pbl. = pbl.trim,
-      #   crop.usa = crop.usa,
-      #   return.linked.data. = return.linked.data
-      # )
-      # linked_grids <- rbind(linked_grids,tmp_linked_grids)
-      # for(counter in c(1:29)){
-      #   cur_startdate = cur_startdate+1
-      #   cur_linkdates <- list(cur_startdate,cur_startdate+1)
-      #   names(cur_linkdates) <- c("start.date","end.date")
-      #   tmp_linked_grids <- parallel::mclapply(
-      #     cur_linkdates,
-      #     disperseR::disperser_link_grids,
-      #     unit = u,
-      #     pbl.height = pbl.height,
-      #     duration.run.hours = duration.run.hours,
-      #     overwrite = overwrite,
-      #     res.link. = res.link,
-      #     mc.cores = mc.cores,
-      #     pbl. = pbl.trim,
-      #     crop.usa = crop.usa,
-      #     return.linked.data. = return.linked.data
-      #   )
-      #   linked_grids <- rbind(linked_grids,tmp_linked_grids)
-      # }
-    }
-    else if(by.time == 'week'){
-      
-    }else{
-      linked_grids <- parallel::mclapply(
-        link_dates,
-        disperseR::disperser_link_grids,
-        unit = u,
-        pbl.height = pbl.height,
-        duration.run.hours = duration.run.hours,
-        overwrite = overwrite,
-        res.link. = res.link,
-        mc.cores = mc.cores,
-        pbl. = pbl.trim,
-        crop.usa = crop.usa,
-        return.linked.data. = return.linked.data
-      )
-    }
-
+    linked_grids <- parallel::mclapply(
+      link_dates,
+      disperseR::disperser_link_grids,
+      unit = u,
+      pbl.height = pbl.height,
+      duration.run.hours = duration.run.hours,
+      overwrite = overwrite,
+      res.link. = res.link,
+      mc.cores = mc.cores,
+      pbl. = pbl.trim,
+      crop.usa = crop.usa,
+      return.linked.data. = return.linked.data
+    )
     linked_grids <- data.table::rbindlist(Filter(is.data.table, linked_grids))
     message(paste("processed unit", u$ID, ""))
 
