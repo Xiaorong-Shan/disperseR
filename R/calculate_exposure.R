@@ -36,7 +36,7 @@ calculate_exposure <- function(year.E,
                                rda_file = 'loaded',
                                exp_dir = NULL,
                                source.agg = c('total', 'facility', 'unit'),
-                               time.agg = c('year', 'month'),
+                               time.agg = c('year', 'month','day'),
                                return.monthly.data = F) {
   `%ni%` <- Negate(`%in%`)
 
@@ -52,8 +52,8 @@ calculate_exposure <- function(year.E,
     message('Multiple time.agg provided, deaulting to "year".')
     time.agg <- 'year'
   }
-  if (time.agg %ni% c('year', 'month')) {
-    stop('time.agg not recognized, please provide one of c("year", "month").')
+  if (time.agg %ni% c('year', 'month','day')) {
+    stop('time.agg not recognized, please provide one of c("year", "month", "day").')
   }
 
   #define defaults if none provided
@@ -179,7 +179,7 @@ calculate_exposure <- function(year.E,
       # sum over the year so far
       exposures <- exposures[, list(Exposure = sum(Exposure)),
                              by = sum.by]
-    } else {
+    } else if (time.agg == 'month'){
       # define aggregation strings
       if (source.agg == 'total'){
         sum.by <- c(id.v, 'yearmonth')
@@ -263,7 +263,7 @@ calculate_exposure <- function(year.E,
     }
 
     return(exposures)
-  } else {
+  } else if (time.agg == 'month'){
     if (return.monthly.data) {
       out <- rbindlist(lapply(na.omit(monthly.filelist),
                               read.fst))
