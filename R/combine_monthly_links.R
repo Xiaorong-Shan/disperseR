@@ -36,6 +36,7 @@ combine_monthly_links <- function( month_YYYYMMs,
     } else if( link.to == 'counties'){
       pattern <- paste0('countylinks.*', year.h, '-', month.h, '.*\\.fst$')
     }
+    print(pattern)
 
     files.month <-
       list.files(path = ziplink_dir,
