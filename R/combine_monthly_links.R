@@ -24,6 +24,7 @@ combine_monthly_links <- function( month_YYYYMMs,
   names.map <- c()
 
   for (ym in month_YYYYMMs) {
+    print(ym)
 
     year.h <- substr(ym, 1, 4)
     month.m <- as.integer(substr(ym, 5, 6))
