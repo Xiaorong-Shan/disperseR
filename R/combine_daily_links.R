@@ -1,6 +1,6 @@
 #' create a set of directories to run disperseR
 #'
-#' \code{combine_monthly_links}
+#' \code{combine_daily_links}
 #'
 #' @description `combine_daily_links()` combines linked files produced with `disperseR::link_all_units()` into lists of data.tables for easier manipulating
 #'
