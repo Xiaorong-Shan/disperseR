@@ -2,7 +2,7 @@
 #'
 #' \code{combine_monthly_links}
 #'
-#' @description `combine_monthly_links()` combines linked files produced with `disperseR::link_all_units()` into lists of data.tables for easier manipulating
+#' @description `combine_daily_links()` combines linked files produced with `disperseR::link_all_units()` into lists of data.tables for easier manipulating
 #'
 #'
 #' @param month_YYYYMMs months and years to combine. Format created by `disperseR::get_yearmon()``
@@ -15,9 +15,9 @@
 #' @return Saves an .RData file to the rdata_dir defined by `disperseR::create_dirs()` with filename `filename`.
 #'
 #'
-#' @export combine_monthly_links
+#' @export combine_daily_links
 
-combine_monthly_links <- function( month_YYYYMMs,
+combine_daily_links <- function( month_YYYYMMs,
                                    link.to = 'zips',
                                    filename = NULL) {
 
@@ -29,7 +29,15 @@ combine_monthly_links <- function( month_YYYYMMs,
     year.h <- substr(ym, 1, 4)
     month.m <- as.integer(substr(ym, 5, 6))
     month.h <- formatC(month.m, width = 2, format = "d", flag = "0")
-
+    start.date <- as.Date(paste(year.h,month.h,"01",sep = '-'))
+    end.date <- as.Date(paste(year.h,formatC(month.m+1, width = 2, format = "d", flag = "0"),"01",sep = '-'))-1
+    headdate = start.date[1]
+    taildate = tail(end.date,n=1)
+    start.date = seq(from=headdate,to=taildate-1,by='day')
+    end.date = seq(from=headdate+1,to=taildate,by='day')
+    print(start.date)
+    print(end.date)
+    
     if( link.to == 'zips'){
       pattern <- paste0('ziplinks.*', year.h, '-', month.h, '.*\\.fst$')
     } else if( link.to == 'grids'){
