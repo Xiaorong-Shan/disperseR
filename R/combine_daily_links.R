@@ -45,9 +45,9 @@ combine_daily_links <- function( month_YYYYMMs,
       if( link.to == 'zips'){
         pattern <- paste0('ziplinks.*', sdate, '_', edate, '.*\\.fst$')
       } else if( link.to == 'grids'){
-        pattern <- paste0('gridlinks.*', sdate, '-', edate, '.*\\.fst$')
+        pattern <- paste0('gridlinks.*', sdate, '_', edate, '.*\\.fst$')
       } else if( link.to == 'counties'){
-        pattern <- paste0('countylinks.*', sdate, '-', edate, '.*\\.fst$')
+        pattern <- paste0('countylinks.*', sdate, '_', edate, '.*\\.fst$')
       }
       print(pattern)
       
