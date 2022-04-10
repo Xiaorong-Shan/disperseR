@@ -37,8 +37,9 @@ combine_daily_links <- function( month_YYYYMMs,
     end.date = seq(from=headdate+1,to=taildate,by='day')
     print(start.date)
     print(end.date)
+
     
-    for(i in 1:nrow(start.date)){
+    for(i in 1:length(start.date)){
       sdate <- start.date[i]
       edate <- end.date[i]
       if( link.to == 'zips'){
