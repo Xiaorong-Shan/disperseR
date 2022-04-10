@@ -49,7 +49,7 @@ combine_daily_links <- function( month_YYYYMMs,
       } else if( link.to == 'counties'){
         pattern <- paste0('countylinks.*', sdate, '_', edate, '.*\\.fst$')
       }
-      print(pattern)
+      print(pattern) #pattern is file name searching pattern
       
       files.month <-
         list.files(path = ziplink_dir,
@@ -66,8 +66,8 @@ combine_daily_links <- function( month_YYYYMMs,
                '',
                files.month)
         names(files.month) <- unitnames
-        print(paste('files.month',files.month))
-        print(paste('unitnames',unitnames))
+        # print(paste('files.month',files.month)) #files.month is file path
+        # print(paste('unitnames',unitnames)) #unitname is ID
         
         if( link.to == 'zips'){
           data.h <- lapply(seq_along(files.month),
@@ -104,7 +104,7 @@ combine_daily_links <- function( month_YYYYMMs,
         }
         
         # assign to mappings
-        name.map <- paste0("MAP", month.m, ".", year.h)
+        name.map <- paste0("MAP", month.m, ".",substr(sdate,9,10),".", year.h)
         names.map <- append(names.map, name.map)
         assign(name.map, Merged_cast)
         rm("MergedDT", "Merged_cast")
