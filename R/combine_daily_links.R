@@ -38,72 +38,79 @@ combine_daily_links <- function( month_YYYYMMs,
     print(start.date)
     print(end.date)
     
-    if( link.to == 'zips'){
-      pattern <- paste0('ziplinks.*', year.h, '-', month.h, '.*\\.fst$')
-    } else if( link.to == 'grids'){
-      pattern <- paste0('gridlinks.*', year.h, '-', month.h, '.*\\.fst$')
-    } else if( link.to == 'counties'){
-      pattern <- paste0('countylinks.*', year.h, '-', month.h, '.*\\.fst$')
-    }
-    print(pattern)
-
-    files.month <-
-      list.files(path = ziplink_dir,
-                 pattern = pattern,
-                 full.names = T)
-
-    if (length(files.month) == 0) {
-      print(paste("No data files for month_YYYYMMs", ym))
-    } else {
-      print(paste('Reading and merging month', month.h, 'in year', year.h))
-
-      unitnames <-
-        gsub(paste0('.*links_|_', year.h, '-', month.h , '.*fst$'),
-             '',
-             files.month)
-      names(files.month) <- unitnames
-
-
+    for(i in 1:nrow(start.date)){
+      sdate <- start.date[i]
+      edate <- end.date[i]
       if( link.to == 'zips'){
-        data.h <- lapply(seq_along(files.month),
-                         disperseR::read_ziplinks_subfun,
-                         files.month)
-
-        MergedDT  <- rbindlist(data.h)
-        Merged_cast <-
-          dcast(MergedDT,
-                ZIP ~ ID,
-                fun.aggregate = sum,
-                value.var = "N")
+        pattern <- paste0('ziplinks.*', sdate, '_', edate, '.*\\.fst$')
       } else if( link.to == 'grids'){
-        data.h <- lapply(seq_along(files.month),
-                         disperseR::read_gridlinks_subfun,
-                         files.month)
-
-        MergedDT  <- rbindlist(data.h)
-        Merged_cast <- dcast(MergedDT,
-                             x + y ~ ID,
-                             fun.aggregate = sum,
-                             value.var = "N")
-
-        } else if( link.to == 'counties'){
-        data.h <- lapply(seq_along(files.month),
-                         disperseR::read_countylinks_subfun,
-                         files.month)
-
-        MergedDT  <- rbindlist( data.h)
-        Merged_cast <- dcast(MergedDT,
-                             statefp + countyfp + state_name + name + geoid ~ ID,
-                             fun.aggregate = sum,
-                             value.var = "N")
+        pattern <- paste0('gridlinks.*', sdate, '-', edate, '.*\\.fst$')
+      } else if( link.to == 'counties'){
+        pattern <- paste0('countylinks.*', sdate, '-', edate, '.*\\.fst$')
       }
-
-      # assign to mappings
-      name.map <- paste0("MAP", month.m, ".", year.h)
-      names.map <- append(names.map, name.map)
-      assign(name.map, Merged_cast)
-      rm("MergedDT", "Merged_cast")
+      print(pattern)
+      
+      files.month <-
+        list.files(path = ziplink_dir,
+                   pattern = pattern,
+                   full.names = T)
+      
+      if (length(files.month) == 0) {
+        print(paste("No data files for start.date", sdate))
+      } else {
+        print(paste('Reading and merging from', sdate,'to',edate))
+        
+        unitnames <-
+          gsub(paste0('.*links_|_', year.h, '-', month.h , '.*fst$'),
+               '',
+               files.month)
+        names(files.month) <- unitnames
+        print(paste('files.month',files.month))
+        print(paste('unitnames',unitnames))
+        
+        if( link.to == 'zips'){
+          data.h <- lapply(seq_along(files.month),
+                           disperseR::read_ziplinks_subfun,
+                           files.month)
+          
+          MergedDT  <- rbindlist(data.h)
+          Merged_cast <-
+            dcast(MergedDT,
+                  ZIP ~ ID,
+                  fun.aggregate = sum,
+                  value.var = "N")
+        } else if( link.to == 'grids'){
+          data.h <- lapply(seq_along(files.month),
+                           disperseR::read_gridlinks_subfun,
+                           files.month)
+          
+          MergedDT  <- rbindlist(data.h)
+          Merged_cast <- dcast(MergedDT,
+                               x + y ~ ID,
+                               fun.aggregate = sum,
+                               value.var = "N")
+          
+        } else if( link.to == 'counties'){
+          data.h <- lapply(seq_along(files.month),
+                           disperseR::read_countylinks_subfun,
+                           files.month)
+          
+          MergedDT  <- rbindlist( data.h)
+          Merged_cast <- dcast(MergedDT,
+                               statefp + countyfp + state_name + name + geoid ~ ID,
+                               fun.aggregate = sum,
+                               value.var = "N")
+        }
+        
+        # assign to mappings
+        name.map <- paste0("MAP", month.m, ".", year.h)
+        names.map <- append(names.map, name.map)
+        assign(name.map, Merged_cast)
+        rm("MergedDT", "Merged_cast")
+      }
     }
+    
+    
   }
 
   # put all grid links on consistent extent
