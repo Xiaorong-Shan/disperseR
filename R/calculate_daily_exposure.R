@@ -162,7 +162,7 @@ calculate_daily_exposure <- function(year.E,
         Exposure  = pollutant * N,
         yearmonth = paste0(year.E, i,j)
       )]
-      
+      print(PP.linkage)
       # Append running data frame
       exposures <- data.table(rbind(exposures,
                                     PP.linkage[, list(hyads = sum(Exposure)),
