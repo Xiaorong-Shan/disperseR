@@ -132,7 +132,7 @@ calculate_daily_exposure <- function(year.E,
       )
       if (sapply(day_mapping_long, class)['N'] == 'character')
         day_mapping_long[, `:=`(N = as.double(N))]
-      print(day_mapping_long)
+
       #This is what I want - pollutant-weighted emissions trajectories
       PP.linkage <-
         merge(day_mapping_long,
@@ -162,7 +162,7 @@ calculate_daily_exposure <- function(year.E,
         Exposure  = pollutant * N,
         yearmonth = paste0(year.E, i,j)
       )]
-      print(PP.linkage)
+      print(paste("PP.linkage",PP.linkage))
       # Append running data frame
       exposures <- data.table(rbind(exposures,
                                     PP.linkage[, list(hyads = sum(Exposure)),
@@ -194,7 +194,7 @@ calculate_daily_exposure <- function(year.E,
     }
 
   }
-
+  print(daily.filelist)
   if (return.daily.data) {
     out <- rbindlist(lapply(na.omit(daily.filelist),
                             read.fst))
