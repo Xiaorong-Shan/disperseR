@@ -132,7 +132,7 @@ calculate_daily_exposure <- function(year.E,
       )
       if (sapply(day_mapping_long, class)['N'] == 'character')
         day_mapping_long[, `:=`(N = as.double(N))]
-      
+      print(day_mapping_long)
       #This is what I want - pollutant-weighted emissions trajectories
       PP.linkage <-
         merge(day_mapping_long,
