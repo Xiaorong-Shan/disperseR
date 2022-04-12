@@ -162,7 +162,7 @@ calculate_daily_exposure <- function(year.E,
         Exposure  = pollutant * N,
         yearmonth = paste0(year.E, i,j)
       )]
-      print(paste("PP.linkage",PP.linkage))
+      print(PP.linkage)
       # Append running data frame
       exposures <- data.table(rbind(exposures,
                                     PP.linkage[, list(hyads = sum(Exposure)),
@@ -187,7 +187,7 @@ calculate_daily_exposure <- function(year.E,
       if (nrow(exposures) != 0) {
         write.fst(exposures,
                   path = file.mo)
-        daily.filelist[i] <- file.mo
+        append(daily.filelist,file.mo)# we have multiple files per month, thus we append files into filelist.
       }
       #re-initiate ZIP exposure data.table
       exposures <-  data.frame()
