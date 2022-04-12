@@ -19,9 +19,7 @@
 #'
 #' @param source.agg source aggregation level
 #'
-#' @param time.agg time aggregation level
-#'
-#' @param return.monthly.data logical. If TRUE, returns monthly datasets if `time.agg = 'month'`. Set to FALSE to save memory space.
+#' @param return.daily.data logical. If TRUE, returns daily datasets. Set to FALSE to save memory space.
 #'
 #' @return Creates directories (does not overwrite if existing). Outputs string variables with paths to the environment.
 
@@ -36,8 +34,7 @@ calculate_daily_exposure <- function(year.E,
                                rda_file = 'loaded',
                                exp_dir = NULL,
                                source.agg = c('total', 'facility', 'unit'),
-                               time.agg = c('year', 'month','day'),
-                               return.monthly.data = F) {
+                               return.daily.data = F) {
   `%ni%` <- Negate(`%in%`)
 
   #define defaults if none provided
@@ -47,13 +44,6 @@ calculate_daily_exposure <- function(year.E,
   }
   if (source.agg %ni% c('total', 'facility', 'unit')) {
     stop('source.agg not recognized, please provide one of c("total", "facility", "unit").')
-  }
-  if (length(time.agg) > 1) {
-    message('Multiple time.agg provided, deaulting to "year".')
-    time.agg <- 'year'
-  }
-  if (time.agg %ni% c('year', 'month','day')) {
-    stop('time.agg not recognized, please provide one of c("year", "month", "day").')
   }
 
   #define defaults if none provided
@@ -79,7 +69,7 @@ calculate_daily_exposure <- function(year.E,
   exposures <-  data.table()
 
   #initiate list of monthly files
-  monthly.filelist <- c()
+  daily.filelist <- c()
 
   #Iterate over months of the year
   message(
@@ -92,94 +82,67 @@ calculate_daily_exposure <- function(year.E,
     )
   )
   for (i in 1:12) {
-    PP.units_monthly <- subset(units.mo, month == i & year == year.E)
-    setnames(PP.units_monthly, pollutant, 'pollutant')
-
-    #Aggregate unit power plant emissions to unit level
-    PP_monthly <- PP.units_monthly[!duplicated(uID)]
-    PP_monthly <- PP_monthly[is.na(pollutant), pollutant := 0]
-
-    #get HYPSPLIT mappings
-    map.name <- paste0("MAP", i, ".", year.D)
-    if (map.name %ni% ls(envir = globalenv())
-        & map.name %ni% ls()) {
-      message(
-        paste('  ',
-              map.name,
-              'not loaded in environment. If you want it linked, either load RData file before or specify rda_file'
+    for(j in 1:31){
+      PP.units_daily <- subset(units.mo, month == i & year == year.E & day==j)
+      setnames(PP.units_daily, pollutant, 'pollutant')
+      
+      #Aggregate unit power plant emissions to unit level
+      PP_daily <- PP.units_daily[!duplicated(uID)]
+      PP_daily <- PP_daily[is.na(pollutant), pollutant := 0]
+      
+      #get HYPSPLIT mappings
+      map.name <- paste0("MAP", i, ".",j,".", year.D)
+      if (map.name %ni% ls(envir = globalenv())
+          & map.name %ni% ls()) {
+        message(
+          paste('  ',
+                map.name,
+                'not loaded in environment. If you want it linked, either load RData file before or specify rda_file'
+          )
         )
+        next
+      }
+      if (map.name %in% ls()) {
+        day_mapping <-
+          data.table(eval(parse(text = map.name)))
+      } else{
+        day_mapping <- data.table(eval(parse(text = map.name),
+                                         envir = globalenv()))
+      }
+      
+      #melt them to long format
+      if( link.to == 'zips'){
+        id.v <- 'ZIP'
+        day_mapping <- day_mapping[ZIP != 'ZIP']
+      } else if( link.to == 'counties'){
+        id.v <- c("statefp", "countyfp", "state_name", "name", "geoid")
+      } else if( link.to == 'grids')
+        id.v <- c('x', 'y')
+      
+      day_mapping[is.na(day_mapping)] <- 0
+      names(day_mapping)[names(day_mapping) %ni% 'state_name'] <-
+        gsub('_|-|\\*', '.', names(day_mapping)[names(day_mapping) %ni% 'state_name'])
+      
+      day_mapping_long <- melt(
+        day_mapping,
+        id.vars = id.v,
+        variable.factor = FALSE,
+        variable.name = "uID",
+        value.name = "N"
       )
-      next
-    }
-    if (map.name %in% ls()) {
-      month_mapping <-
-        data.table(eval(parse(text = map.name)))
-    } else{
-      month_mapping <- data.table(eval(parse(text = map.name),
-                                       envir = globalenv()))
-    }
-
-    #melt them to long format
-    if( link.to == 'zips'){
-      id.v <- 'ZIP'
-      month_mapping <- month_mapping[ZIP != 'ZIP']
-    } else if( link.to == 'counties'){
-      id.v <- c("statefp", "countyfp", "state_name", "name", "geoid")
-    } else if( link.to == 'grids')
-      id.v <- c('x', 'y')
-
-    month_mapping[is.na(month_mapping)] <- 0
-    names(month_mapping)[names(month_mapping) %ni% 'state_name'] <-
-      gsub('_|-|\\*', '.', names(month_mapping)[names(month_mapping) %ni% 'state_name'])
-
-    month_mapping_long <- melt(
-      month_mapping,
-      id.vars = id.v,
-      variable.factor = FALSE,
-      variable.name = "uID",
-      value.name = "N"
-    )
-    if (sapply(month_mapping_long, class)['N'] == 'character')
-      month_mapping_long[, `:=`(N = as.double(N))]
-
-    #This is what I want - pollutant-weighted emissions trajectories
-    PP.linkage <-
-      merge(month_mapping_long,
-            PP_monthly,
-            by = 'uID',
-            all.y = T)
-
-    #  clean house
-    rm(list = c('month_mapping_long', 'PP_monthly', 'month_mapping'))
-
-    # Sum by ZIP and uID if calculating annual
-    if (time.agg == 'year') {
-      # define aggregation strings
-      if (source.agg == 'total'){
-        sum.by <- id.v
-        file.by <- '_exposures_total_'
-      }
-      if (source.agg == 'facility'){
-        sum.by <- c(id.v, 'FacID')
-        file.by <- '_exposures_byfacility_'
-      }
-      if (source.agg == 'unit'){
-        sum.by <- c(id.v, 'uID')
-        file.by <- '_exposures_byunit_'
-      }
-
-      # calculate exposure, label year/month
-      PP.linkage[, `:=` (Exposure  = pollutant * N)]
-
-      # Append running data frame
-      exposures <- data.table(rbind(exposures,
-                                    PP.linkage[, list(Exposure = sum(Exposure)),
-                                               by = sum.by]))
-
-      # sum over the year so far
-      exposures <- exposures[, list(Exposure = sum(Exposure)),
-                             by = sum.by]
-    } else if (time.agg == 'month'){
+      if (sapply(day_mapping_long, class)['N'] == 'character')
+        day_mapping_long[, `:=`(N = as.double(N))]
+      
+      #This is what I want - pollutant-weighted emissions trajectories
+      PP.linkage <-
+        merge(day_mapping_long,
+              PP_daily,
+              by = 'uID',
+              all.y = T)
+      
+      #  clean house
+      rm(list = c('day_mapping_long', 'PP_daily', 'day_mapping'))
+      
       # define aggregation strings
       if (source.agg == 'total'){
         sum.by <- c(id.v, 'yearmonth')
@@ -193,36 +156,38 @@ calculate_daily_exposure <- function(year.E,
         sum.by <- c(id.v, 'uID', 'yearmonth')
         file.by <- '_exposures_byunit_'
       }
-
-      # add month
+      
+      # add day
       PP.linkage[, `:=` (
         Exposure  = pollutant * N,
-        yearmonth = paste0(year.E, i)
+        yearmonth = paste0(year.E, i,j)
       )]
-
+      
       # Append running data frame
       exposures <- data.table(rbind(exposures,
                                     PP.linkage[, list(hyads = sum(Exposure)),
                                                by = sum.by]))[hyads > 0]
-
-      # write to file, add monthly file to list if not empty data.table
+      
+      # write to file, add daily file to list if not empty data.table
       file.mo <- file.path(exp_dir,
                            paste0(
                              link.to,
                              file.by,
                              paste0(year.E, '_', formatC(
                                i, width = 2, flag = '0'
+                             ),'_',formatC(
+                               j, width = 2, flag = '0'
                              )),
                              '.fst'
                            ))
-
+      
       if( link.to == 'zips')
         exposures <- exposures[ZIP != '   NA']
-
+      
       if (nrow(exposures) != 0) {
         write.fst(exposures,
                   path = file.mo)
-        monthly.filelist[i] <- file.mo
+        daily.filelist[i] <- file.mo
       }
       #re-initiate ZIP exposure data.table
       exposures <-  data.frame()
@@ -230,49 +195,14 @@ calculate_daily_exposure <- function(year.E,
 
   }
 
-  if (time.agg == 'year') {
-    setnames(exposures,
-             c('Exposure'),
-             c('hyads'))
-    exposures[,  `:=` (
-      year.E = year.E,
-      year.D = year.D
-    )]
-    #convert 3-digit zip code to 5, add emissions and hysplit years
-    if( link.to == 'zips'){
-      exposures[,  `:=` (
-        ZIP = formatC(
-          as.integer(ZIP),
-          width = 5,
-          flag = "0",
-          format = "d"
-        ))]
-      exposures <- exposures[ZIP != '   NA']
-    }
-    # write to file, add monthly file to list if not empty data.table
-    file.yr <- file.path(exp_dir,
-                         paste0(
-                           link.to,
-                           file.by,
-                           year.E,
-                           '.fst'
-                         ))
-    if (nrow(exposures) != 0) {
-      write.fst(exposures,
-                path = file.yr)
-    }
-
-    return(exposures)
-  } else if (time.agg == 'month'){
-    if (return.monthly.data) {
-      out <- rbindlist(lapply(na.omit(monthly.filelist),
-                              read.fst))
-
-      if( link.to == 'zips')
-        out <- out[ZIP != '   NA']
-
-      return(out)
-    } else
-      return(monthly.filelist)
-  }
+  if (return.daily.data) {
+    out <- rbindlist(lapply(na.omit(daily.filelist),
+                            read.fst))
+    
+    if( link.to == 'zips')
+      out <- out[ZIP != '   NA']
+    
+    return(out)
+  } else
+    return(daily.filelist)
 }

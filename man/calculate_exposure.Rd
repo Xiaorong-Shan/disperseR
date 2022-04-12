@@ -13,7 +13,7 @@ calculate_exposure(
   rda_file = "loaded",
   exp_dir = NULL,
   source.agg = c("total", "facility", "unit"),
-  time.agg = c("year", "month", "day"),
+  time.agg = c("year", "month"),
   return.monthly.data = F
 )
 }

@@ -36,7 +36,7 @@ calculate_exposure <- function(year.E,
                                rda_file = 'loaded',
                                exp_dir = NULL,
                                source.agg = c('total', 'facility', 'unit'),
-                               time.agg = c('year', 'month','day'),
+                               time.agg = c('year', 'month'),
                                return.monthly.data = F) {
   `%ni%` <- Negate(`%in%`)
 
@@ -52,8 +52,8 @@ calculate_exposure <- function(year.E,
     message('Multiple time.agg provided, deaulting to "year".')
     time.agg <- 'year'
   }
-  if (time.agg %ni% c('year', 'month','day')) {
-    stop('time.agg not recognized, please provide one of c("year", "month", "day").')
+  if (time.agg %ni% c('year', 'month')) {
+    stop('time.agg not recognized, please provide one of c("year", "month").')
   }
 
   #define defaults if none provided

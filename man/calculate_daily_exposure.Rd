@@ -13,8 +13,7 @@ calculate_daily_exposure(
   rda_file = "loaded",
   exp_dir = NULL,
   source.agg = c("total", "facility", "unit"),
-  time.agg = c("year", "month", "day"),
-  return.monthly.data = F
+  return.daily.data = F
 )
 }
 \arguments{
@@ -30,9 +29,7 @@ calculate_daily_exposure(
 
 \item{source.agg}{source aggregation level}
 
-\item{time.agg}{time aggregation level}
-
-\item{return.monthly.data}{logical. If TRUE, returns monthly datasets if `time.agg = 'month'`. Set to FALSE to save memory space.}
+\item{return.daily.data}{logical. If TRUE, returns daily datasets. Set to FALSE to save memory space.}
 
 \item{exo_dir}{file path to save resulting exposure dataset}
 }
