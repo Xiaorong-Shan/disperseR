@@ -105,6 +105,7 @@ combine_daily_links <- function( month_YYYYMMs,
         
         # assign to mappings
         name.map <- paste0("MAP", month.m, ".",strtoi(substr(sdate,9,10)),".", year.h)
+        print(paste(substr(sdate,9,10),strtoi(substr(sdate,9,10))))
         names.map <- append(names.map, name.map)
         assign(name.map, Merged_cast)
         rm("MergedDT", "Merged_cast")
