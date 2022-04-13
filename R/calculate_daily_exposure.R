@@ -187,7 +187,7 @@ calculate_daily_exposure <- function(year.E,
       if (nrow(exposures) != 0) {
         write.fst(exposures,
                   path = file.mo)
-        append(daily.filelist,file.mo)# we have multiple files per month, thus we append files into filelist.
+        daily.filelist<-append(daily.filelist,file.mo)# we have multiple files per month, thus we append files into filelist.
       }
       #re-initiate ZIP exposure data.table
       exposures <-  data.frame()
