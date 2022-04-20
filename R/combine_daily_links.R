@@ -30,7 +30,7 @@ combine_daily_links <- function( month_YYYYMMs,
     month.m <- as.integer(substr(ym, 5, 6))
     month.h <- formatC(month.m, width = 2, format = "d", flag = "0")
     start.date <- as.Date(paste(year.h,month.h,"01",sep = '-'))
-    end.date <- seq(start.date,by='month',length=2)[2]-1
+    end.date <- seq(start.date,by='month',length=2)[2]
     headdate = start.date[1]
     taildate = tail(end.date,n=1)
     start.date = seq(from=headdate,to=taildate-1,by='day')
