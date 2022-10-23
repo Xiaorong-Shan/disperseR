@@ -219,10 +219,11 @@ trim_pbl <- function(Min,
 
 
 #' @export disperser_link_grids
-disperser_link_grids <- function(   link_dates = NULL,
-                                    month_YYYYMM = NULL,
+disperser_link_grids <- function(  link_dates = NULL,
+                                   month_YYYYMM = NULL,
                                    start.date = NULL,
                                    end.date = NULL,
+                                   exp.hour = exp.hour, 
                                    unit,
                                    duration.run.hours = duration.run.hours,
                                    pbl.height,
@@ -315,8 +316,9 @@ disperser_link_grids <- function(   link_dates = NULL,
     print(  paste( Sys.time(), "Files read and combined"))
 
     ## Trim dates & first hour
-    d <- d[ as( Pdate, 'character') %in% vec_dates & hour > 1, ]
-
+    hour <- exp.hour
+    d <- d[ as( Pdate, 'character') %in% vec_dates & hour %in% c(0:23), ]
+    
     print( d)
     ## Trim PBL's
     if( pbl.){
@@ -372,6 +374,7 @@ disperser_link_counties <- function(  link_dates = NULL,
                                       month_YYYYMM = NULL,
                                      start.date = NULL,
                                      end.date = NULL,
+                                     exp.hour = exp.hour, 
                                      counties,
                                      unit,
                                      duration.run.hours = duration.run.hours,
@@ -459,7 +462,8 @@ disperser_link_counties <- function(  link_dates = NULL,
     print(  paste( Sys.time(), "Files read and combined"))
 
     ## Trim dates & first hour
-    d <- d[ as( Pdate, 'character') %in% vec_dates & hour > 1, ]
+    hour <- exp.hour
+    d <- d[ as( Pdate, 'character') %in% vec_dates & hour %in% c(0:23), ]
 
     ## Trim PBL's
     if( pbl.){
@@ -525,6 +529,7 @@ disperser_link_zips <- function( link_dates = NULL,
                                  month_YYYYMM = NULL,
                                 start.date = NULL,
                                 end.date = NULL,
+                                exp.hour = exp.hour, 
                                 unit,
                                 duration.run.hours = duration.run.hours,
                                 pbl.height=NULL,
@@ -618,8 +623,9 @@ disperser_link_zips <- function( link_dates = NULL,
     print(paste(Sys.time(), "Files read and combined"))
 
     ## Trim dates & first hour
-    d <- d[ as( Pdate, 'character') %in% vec_dates & hour > 1, ]
-
+    hour <- exp.hour
+    d <- d[ as( Pdate, 'character') %in% vec_dates & hour %in% c(0:23), ]
+    
     ## Trim PBL's
     if( pbl.){
       #Check if extent matches the hpbl raster

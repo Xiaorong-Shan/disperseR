@@ -12,6 +12,8 @@
 #'
 #' @param start.end this argument is not necessary, but can be used if the user is interested in specifying a specific date to end the analysis with as opposed to using months. For example `start.date="2005-01-02"` for 2 January 2005.This argument are set to `NULL` by default and the function computes the start and the end dates using the `year.mons` provided.
 #'
+#' @param exp.hour `exp.hour = 1` by default which means start calculating the exposure after 1 hour, exp.hour can be defined from 0 to 23 h 
+#'
 #' @param by.time this argument is not necessary, but can be used if the user is interested in specifying a time scale other than month for aggregating ("day" is currently the only option besides NULL)
 #'
 #' @param link.to one of 'zips', 'counties', or 'grids' to denote spatial linkage scale. zips and counties are only for the USA
@@ -48,6 +50,7 @@ link_all_units<- function(units.run,
                           year.mons = NULL,
                           start.date = NULL,
                           end.date = NULL,
+                          exp.hour = 1, 
                           by.time = "month",
                           pbl.trim = TRUE,
                           pbl.height = NULL,
@@ -121,6 +124,7 @@ link_all_units<- function(units.run,
       unit = u,
       pbl.height = pbl.height,
       crosswalk. = crosswalk.,
+      exp.hour = exp.hour,
       duration.run.hours = duration.run.hours,
       overwrite = overwrite,
       res.link. = res.link,
@@ -143,6 +147,7 @@ link_all_units<- function(units.run,
       unit = u,
       pbl.height = pbl.height,
       counties = counties.,
+      exp.hour = exp.hour,
       duration.run.hours = duration.run.hours,
       overwrite = overwrite,
       res.link. = res.link,
@@ -165,6 +170,7 @@ link_all_units<- function(units.run,
       disperseR::disperser_link_grids,
       unit = u,
       pbl.height = pbl.height,
+      exp.hour = exp.hour,
       duration.run.hours = duration.run.hours,
       overwrite = overwrite,
       res.link. = res.link,
