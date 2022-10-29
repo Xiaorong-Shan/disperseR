@@ -315,9 +315,18 @@ disperser_link_grids <- function(  link_dates = NULL,
       return( paste( "No files available to link in", month_YYYYMM))
     print(  paste( Sys.time(), "Files read and combined"))
 
+    # use exp.hour to start exposuring if available
+    if ((is.null(exp.hour)))
+      stop("please define a value for starting exposure hour")
+    
+    if (exp.hour < 0 | exp.hour > 23){
+      stop("Please define a value between 0 to 23 for starting exposure hour")
+    }else{
+      exp.hour = as.numeric(exp.hour)
+    }
+    
     ## Trim dates & first hour
-    hour <- exp.hour
-    d <- d[ as( Pdate, 'character') %in% vec_dates & hour %in% c(0:23), ]
+    d <- d[ as( Pdate, 'character') %in% vec_dates & hour >= exp.hour, ]
     
     print( d)
     ## Trim PBL's
@@ -461,9 +470,18 @@ disperser_link_counties <- function(  link_dates = NULL,
       return( paste( "No files available to link in", month_YYYYMM))
     print(  paste( Sys.time(), "Files read and combined"))
 
+    # use exp.hour to start exposuring if available
+    if ((is.null(exp.hour)))
+      stop("please define a value for starting exposure hour")
+    
+    if (exp.hour < 0 | exp.hour > 23){
+      stop("Please define a value between 0 to 23 for starting exposure hour")
+    }else{
+      exp.hour = as.numeric(exp.hour)
+    }
+    
     ## Trim dates & first hour
-    hour <- exp.hour
-    d <- d[ as( Pdate, 'character') %in% vec_dates & hour %in% c(0:23), ]
+    d <- d[ as( Pdate, 'character') %in% vec_dates & hour >= exp.hour, ]
 
     ## Trim PBL's
     if( pbl.){
@@ -622,9 +640,18 @@ disperser_link_zips <- function( link_dates = NULL,
     }
     print(paste(Sys.time(), "Files read and combined"))
 
+    # use exp.hour to start exposuring if available
+    if ((is.null(exp.hour)))
+      stop("please define a value for starting exposure hour")
+    
+    if (exp.hour < 0 | exp.hour > 23){
+      stop("Please define a value between 0 to 23 for starting exposure hour")
+    }else{
+      exp.hour = as.numeric(exp.hour)
+    }
+    
     ## Trim dates & first hour
-    hour <- exp.hour
-    d <- d[ as( Pdate, 'character') %in% vec_dates & hour %in% c(0:23), ]
+    d <- d[ as( Pdate, 'character') %in% vec_dates & hour >= exp.hour, ]
     
     ## Trim PBL's
     if( pbl.){

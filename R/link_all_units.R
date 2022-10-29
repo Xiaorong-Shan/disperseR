@@ -74,6 +74,13 @@ link_all_units<- function(units.run,
     stop( "counties. must be provided if link.to == 'counties'")
   if( pbl.trim & is.null( pbl.height))
     stop( "pbl.height must be provided if pbl_trim == TRUE")
+  if ((is.null(exp.hour)))
+    stop("please define a value for starting exposure hour")
+  if (exp.hour < 0 | exp.hour > 23){
+    stop("Please define a value between 0 to 23 for starting exposure hour")
+  }else{
+    exp.hour = as.numeric(exp.hour)
+  }
 
   # define start and end dates as a list
   if (is.null(start.date) | is.null(end.date)) {
