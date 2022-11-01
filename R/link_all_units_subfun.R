@@ -319,8 +319,8 @@ disperser_link_grids <- function(  link_dates = NULL,
     if ((is.null(exp.hour)))
       stop("please define a value for starting exposure hour")
     
-    if (exp.hour < 0 | exp.hour > 23){
-      stop("Please define a value between 0 to 23 for starting exposure hour")
+    if (exp.hour < 0){
+      stop("Please define a value bigger than 0 for starting exposure hour")
     }else{
       exp.hour = as.numeric(exp.hour)
     }
@@ -474,8 +474,8 @@ disperser_link_counties <- function(  link_dates = NULL,
     if ((is.null(exp.hour)))
       stop("please define a value for starting exposure hour")
     
-    if (exp.hour < 0 | exp.hour > 23){
-      stop("Please define a value between 0 to 23 for starting exposure hour")
+    if (exp.hour < 0){
+      stop("Please define a value bigger than 0 for starting exposure hour")
     }else{
       exp.hour = as.numeric(exp.hour)
     }
@@ -644,8 +644,8 @@ disperser_link_zips <- function( link_dates = NULL,
     if ((is.null(exp.hour)))
       stop("please define a value for starting exposure hour")
     
-    if (exp.hour < 0 | exp.hour > 23){
-      stop("Please define a value between 0 to 23 for starting exposure hour")
+    if (exp.hour < 0){
+      stop("Please define a value bigger than 0  for starting exposure hour")
     }else{
       exp.hour = as.numeric(exp.hour)
     }

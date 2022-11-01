@@ -12,7 +12,7 @@
 #'
 #' @param start.end this argument is not necessary, but can be used if the user is interested in specifying a specific date to end the analysis with as opposed to using months. For example `start.date="2005-01-02"` for 2 January 2005.This argument are set to `NULL` by default and the function computes the start and the end dates using the `year.mons` provided.
 #'
-#' @param exp.hour `exp.hour = 1` by default which means start calculating the exposure after 1 hour, exp.hour can be defined from 0 to 23 h 
+#' @param exp.hour `exp.hour = 1` by default which means start calculating the exposure after 1 hour, exp.hour can be defined starting from 0h 
 #'
 #' @param by.time this argument is not necessary, but can be used if the user is interested in specifying a time scale other than month for aggregating ("day" is currently the only option besides NULL)
 #'
@@ -76,8 +76,8 @@ link_all_units<- function(units.run,
     stop( "pbl.height must be provided if pbl_trim == TRUE")
   if ((is.null(exp.hour)))
     stop("please define a value for starting exposure hour")
-  if (exp.hour < 0 | exp.hour > 23){
-    stop("Please define a value between 0 to 23 for starting exposure hour")
+  if (exp.hour < 0){
+    stop("Please define a value bigger than 0 for starting exposure hour")
   }else{
     exp.hour = as.numeric(exp.hour)
   }
