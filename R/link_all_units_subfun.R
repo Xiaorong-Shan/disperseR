@@ -257,7 +257,8 @@ disperser_link_grids <- function(  link_dates = NULL,
   }
 
   if( is.null( month_YYYYMM))
-    month_YYYYMM <- paste( start.date, end.date, sep = '_')
+    #month_YYYYMM <- paste( start.date, end.date, sep = '_')
+    month_YYYYMM <- paste( start.date)
 
   month_YYYYMM <- as( month_YYYYMM, 'character')
 
@@ -583,7 +584,9 @@ disperser_link_zips <- function( link_dates = NULL,
   }
 
   if( is.null( month_YYYYMM))
-    month_YYYYMM <- paste( start.date, end.date, sep = '_')
+    #month_YYYYMM <- paste( start.date, end.date, sep = '_')
+    month_YYYYMM <- paste( start.date)
+  
   month_YYYYMM <- as( month_YYYYMM, 'character')
 
   ## name the eventual output file
