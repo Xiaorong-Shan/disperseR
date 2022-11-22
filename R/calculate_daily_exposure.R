@@ -86,7 +86,7 @@ calculate_daily_exposure <- function(year.E,
     full.date <- as.Date(full.date)
     start_date <- floor_date(full.date, 'month') #the start day of month i and year.E
     end_date <- ceiling_date(full.date, 'month') %m-% days(1) #the end day of month i and year E
-    length_dates <- as.numeric(as.Date(end_date) - as.Date(start_date)) #get the number of days in that month
+    length_dates <- as.numeric(as.Date(end_date) - as.Date(start_date))+1 #get the number of days in that month
     
     for(j in 1:length_dates){
       PP.units_daily <- subset(units.mo, month == i & year == year.E & day==j)
