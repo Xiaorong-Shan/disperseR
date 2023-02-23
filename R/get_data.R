@@ -98,7 +98,7 @@ get_data <-
       directory <- zcta_dir
       file <- file.path(directory, 'cb_2017_us_zcta510_500k.zip')
       url <-
-        'ftp://ftp2.census.gov/geo/tiger/GENZ2017/shp/cb_2017_us_zcta510_500k.zip'
+        'https://www2.census.gov/geo/tiger/GENZ2017/shp/cb_2017_us_zcta510_500k.zip'
 
       if (!file.exists(file)) {
         message(
@@ -234,11 +234,9 @@ get_data <-
       ## planetary layers data
       directory <- hpbl_dir
       file <- file.path(directory, 'hpbl.mon.mean.nc')
-      # url <-
-      #   'https://www.esrl.noaa.gov/psd/repository/entry/get/hpbl.mon.mean.nc?entryid=synth%3Ae570c8f9-ec09-4e89-93b4-babd5651e7a9%3AL05BUlIvTW9udGhsaWVzL21vbm9sZXZlbC9ocGJsLm1vbi5tZWFuLm5j'
-      url<-
-        'https://downloads.psl.noaa.gov/Datasets/NARR/Monthlies/monolevel/hpbl.mon.mean.nc'
-      }
+       url <-
+        'https://www.esrl.noaa.gov/psd/repository/entry/get/hpbl.mon.mean.nc?entryid=synth%3Ae570c8f9-ec09-4e89-93b4-babd5651e7a9%3AL05BUlIvTW9udGhsaWVzL21vbm9sZXZlbC9ocGJsLm1vbi5tZWFuLm5j'
+     }
 
     # download meteo files
     if (data == "metfiles") {
