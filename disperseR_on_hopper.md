@@ -71,6 +71,6 @@ If we need to install new library for R studio, type the install.packages() comm
 For example, to install package "USAboundaries", type
 
 ```
-$  install.packages("USAboundaries", repos = "http://packages.ropensci.org", type = "source")
+$ install.packages("USAboundaries", repos = "http://packages.ropensci.org", type = "source")
 $ library(USAboundaries)
 ```
