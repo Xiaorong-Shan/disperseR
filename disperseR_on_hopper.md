@@ -6,11 +6,17 @@ $ module load  r/4.0.3-hx libxml2/2.9.10-ej doxygen/1.8.20-g6 proj/7.1.0-7x netc
 ```
 
 Next enter R and install with following command
+
+```
 $ devtools::install_github("Xiaorong-Shan/disperseR@dev-sherry", args = c('--library="~/R"'), force = TRUE, build_vignettes = FALSE)
+```
 
 # Run disperseR on hopper 
 Get into the directory where you installed it
+
+```
 $ cd HAQ_LAB/xshan2/disperseR_sherry/
+```
 
 Start a task on hopper
 $ srun -p normal --mem 30g -t 0-04:00 -c 1 -N 1 --pty /bin/bash
