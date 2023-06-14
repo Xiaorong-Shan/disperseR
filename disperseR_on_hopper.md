@@ -1,6 +1,9 @@
 # Installation for disperseR on hopper
 First load the modules for the required dependencies
+
+```
 $ module load  r/4.0.3-hx libxml2/2.9.10-ej doxygen/1.8.20-g6 proj/7.1.0-7x netcdf-cxx4/4.3.1 libjpeg/9d-re gdal/3.2.2-ai geos/3.7.2-2a udunits/2.2.28-mc libiconv/1.16-y3 pcre/8.44-hy libgeotiff/1.6.0-sx libpng/1.6.37-3x curl/7.74.0-4t ffmpeg/4.2.2-ey
+```
 
 Next enter R and install with following command
 $ devtools::install_github("Xiaorong-Shan/disperseR@dev-sherry", args = c('--library="~/R"'), force = TRUE, build_vignettes = FALSE)
