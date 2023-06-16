@@ -12,6 +12,12 @@ devtools::install_github("Xiaorong-Shan/disperseR@dev-sherry", args = c('--libra
 ```
 
 # Run disperseR on hopper 
+Login into the therminal with following commands:
+
+```
+ssh xshan2@hopper-intel.orc.gmu.edu
+```
+
 Get into the directory where you installed it
 
 ```
